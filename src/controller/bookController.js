@@ -16,7 +16,7 @@ const createBook = async (req, res) => {
 
 const getBook = async (req, res) => {
     try {
-        let data = req.query
+        let data = req.query //{title:"ajdhf",catehh: "fhfh"}
         data.isDeleted = false
         let result = await bookModel.find(data).select({ ISBN: 0, subcategory: 0, deletedAt: 0, isDeleted: 0, createdAt: 0, updatedAt: 0, __v:0 }).sort({title:1})
         res.status(200).send({ status: true, message: 'Success', data: result })
