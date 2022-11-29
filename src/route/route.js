@@ -9,15 +9,15 @@ router.post("/register", userController.createUser)
 
 router.post("/login", userController.userLogin)
 
-router.post("/books", bookController.createBook)
+router.post("/books", middleware.authentication,  bookController.createBook)  
 
-router.get("/books",middleware.authentication, bookController.getBook)
+router.get("/books", middleware.authentication, bookController.getBook)
 
-router.get("/books/:bookId", bookController.getBookById)
+router.get("/books/:bookId", middleware.authentication, bookController.getBookById)
 
-router.put("/books/:bookId", bookController.updateBook)
+router.put("/books/:bookId", middleware.authentication, middleware.autherisation, bookController.updateBook)  
 
-router.delete("/books/:bookId", bookController.deleteBook)
+router.delete("/books/:bookId", middleware.authentication, middleware.autherisation, bookController.deleteBook)    
 
 router.post("/books/:bookId/review", reviewController.createReview )
 

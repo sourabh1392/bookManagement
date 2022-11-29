@@ -1,5 +1,6 @@
 const reviewModel = require("../model/reviewModel")
 const bookModel = require("../model/bookModel")
+const moment = require("moment")
 
 
 const createReview = async (req, res) => {
@@ -9,14 +10,8 @@ const createReview = async (req, res) => {
 
         let bookData = await bookModel.findById(bookId)
 
-        let time = new Date()
-        let date = time.getDate()
-        let month = time.getMonth() + 1
-        let year = time.getFullYear()
         
-        let fullDate = year + "-" + month + "-" + date
-
-        data.reviewedAt = fullDate;
+        data.reviewedAt = moment().format("YYYY-MM-DD")
 
         data.bookId = bookId
 

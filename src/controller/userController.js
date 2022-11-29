@@ -18,7 +18,7 @@ function checkPassword(str) {
 }
 
 
-//----------API to create user--------------------//
+//******************************************************* API to create User ************************************************//
 
 const createUser = async (req, res) => {
     try {
@@ -38,8 +38,8 @@ const createUser = async (req, res) => {
 
         let checkName = name.match(/[0-9]/)   //replace the rejex
         if(checkName){return res.status(400).send({ status: false, message: "Please enter a valid user name" })}
-        name = name.trim()
-        name = name.replace(name[0], name[0].toUpperCase())
+        data.name = name.trim()
+        data.name = name.replace(name[0], name[0].toUpperCase())
 
         let checkPhone = phone.match(/[a-z]/)
         if(phone.length != 10 || checkPhone){return res.status(400).send({ status: false, message: "Please enter a valid phone number" })}
@@ -67,6 +67,8 @@ const createUser = async (req, res) => {
 
 
 
+
+//******************************************************* API to user login ************************************************//
 
 const userLogin = async (req, res) => {
     try {
