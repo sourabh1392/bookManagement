@@ -1,20 +1,23 @@
 const reviewModel = require("../model/reviewModel")
 const bookModel = require("../model/bookModel")
-const moment = require("moment")
+const moment = require("moment");
+const { isValidObjectId } = require("mongoose");
 
 
 const createReview = async (req, res) => {
     try {
         let data = req.body;
+        if(Object.keys(data).length ==0){return res.status(400).send({status:false, message:"Please enter review details"})}
+
         let bookId = req.params.bookId;
+        if(!isValidObjectId(bookId)){return res.status(400).send({status:false, message:"Please enter a valid Book Id"})}
 
         let bookData = await bookModel.findById(bookId)
-
-        
         data.reviewedAt = moment().format("YYYY-MM-DD")
 
         data.bookId = bookId
-
+        
+        
         await reviewModel.create(data)
         let reviewsData = await reviewModel.find({ bookId: bookId }).select({isDeleted:0, __v:0})
 
@@ -50,8 +53,6 @@ const updateReview = async (req, res) => {
     } catch (err) {
         res.status(500).send({ status: false, message: err.message })
     }
-
-
 }
 
 
