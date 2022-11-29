@@ -54,7 +54,6 @@
   review: {string, optional}
   isDeleted: {boolean, default: false},
 }
-```
 
 ## User APIs 
 ### POST /register

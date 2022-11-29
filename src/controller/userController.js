@@ -79,13 +79,12 @@ const userLogin = async (req, res) => {
         if(!validateEmail(email))  return res.status(400).send({status : false , message : 'Please enter valid email !'})
         if(!checkPassword(password)) return res.status(400).send({status : false , message : 'Please enter valid Password !'})
         
-        const userData = await userModel.findOne({ email: email})
-        if(!userData){return}
+        const userData = await userModel.findOne({email: email})
+        if(!userData){return res.status(404).send({status:false, message:"User not found"})}
 
-        if(!userData) return res.status(400).send({status:false , message : ' User Not Found '})
+        if(userData.password != password){return res.status(400).send({status:false, message:"Please enter correct Password !"})}
 
-        const token = jwt.sign({ userId: userData._id }, "book management", {expiresIn:"60s"})
-
+        const token = jwt.sign({ userId: userData._id }, "book management", {expiresIn:"24h"})
         res.status(200).send({ status: true, message: 'Success', data: token })
         
     } catch (err) {
