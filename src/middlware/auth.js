@@ -14,10 +14,11 @@ const authentication = (req, res, next) => {
                     } else return res.status(401).send({ status: false, message: "Authenitication failed" })
                 }
                 req.decodedToken = decode
+                next()
             })
         }
         else return res.status(404).send({ status: false, msg: "Token is missing" })
-        next()
+       
     }
     catch (err) {
         return res.status(500).send({ status: false, Error: err.message })

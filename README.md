@@ -17,7 +17,7 @@
   email: {string, mandatory, valid email, unique}, 
   password: {string, mandatory, minLen 8, maxLen 15},
   address: {
-    street: {string},
+    street: {string},    //
     city: {string},
     pincode: {string}
   },
