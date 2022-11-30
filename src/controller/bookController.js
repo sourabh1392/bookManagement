@@ -90,13 +90,10 @@ const getBook = async (req, res) => {
 const getBookById = async (req, res) => {
     try {
         let bookId = req.params.bookId;
-        if(Object.keys(req.params).length!=1){return res.status(400).send({status:false,message:"Please enter BookId"})}
-        
         if(!isValidObjectId(bookId)) return res.status(400).send({status:false,message:"Enter valid BookId"})
 
         let bookData = await bookModel.findById({ _id: bookId ,isDeleted:false}).lean()
-
-        if(!bookData) return res.status(400).send({status:false,message:"No such book found"})
+        if(!bookData) return res.status(404).send({status:false,message:"No such book found"})
     
         let reviewsData = await reviewModel.find({ bookId: bookId, isDeleted: false })
         bookData.reviewsData = reviewsData
@@ -120,7 +117,9 @@ const updateBook = async (req, res) => {
         if(req.bookData.isDeleted == true){return res.send({status:false, message:"This book is deleted"})}
         
         let data = req.body;
-        let {title, releasedAt, ISBN } = data;
+        if(Object.keys(data).length==0){return res.send({status:false, message:"Please enter data to update"})}
+        
+        let {title, excerpt, releasedAt, ISBN } = data;
 
         const bookData = await bookModel.findOne({ title: title })
         if (bookData) { return res.status(400).send({ status: false, message: "Title is already presents, please enter another title" }) }

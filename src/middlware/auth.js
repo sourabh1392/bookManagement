@@ -16,7 +16,7 @@ const authentication = (req, res, next) => {
                 req.decodedToken = decode
             })
         }
-        else res.status(404).send({ status: false, msg: "Token is missing" })
+        else return res.status(404).send({ status: false, msg: "Token is missing" })
         next()
     }
     catch (err) {
@@ -29,13 +29,10 @@ const authentication = (req, res, next) => {
 const autherisation = async (req, res, next) => {
     try {
         const bookId = req.params.bookId;
-
-        if (!bookId) { return res.status(400).send({ status: false, message: "Please enter BookId" }) }
-
-        if (!isValidObjectId(bookId)) { return res.status(400).send({ status: false, msg: "Enter Valid book Id" }) }
+        if (!isValidObjectId(bookId)){ return res.status(400).send({ status: false, msg: "Enter Valid book Id" }) }
 
         const bookData = await bookModel.findById(bookId)
-        if (!bookData) return res.status(404).send({ status: false, msg: "Book not found" })
+        if (!bookData) {return res.status(404).send({ status: false, msg: "Book not found" })}
         req.bookData = bookData
 
         if (bookData.userId != req.decodedToken.userId) { return res.status(401).send({ status: false, msg: "Not Authorized !" }) }
