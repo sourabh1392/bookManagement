@@ -2,6 +2,7 @@ const reviewModel = require("../model/reviewModel")
 const bookModel = require("../model/bookModel")
 const moment = require("moment");
 const { isValidObjectId } = require("mongoose");
+const {checkName, } = require("../validator/validation")
 
 
 
@@ -19,13 +20,11 @@ const createReview = async (req, res) => {
         if(!bookData){return res.status(404).send({status:false, message:"No such book found"})}
         if(bookData.isDeleted == true){return res.status(400).send({status:false, message:"Book is Deleted"})}
         
-        let {reviewedBy, rating, review} = data;
+        let {reviewedBy, rating} = data;
  
         if(reviewedBy){
-            let checkName = reviewedBy.match(/[0-9]/)  
-            if(checkName){return res.status(400).send({ status: false, message: "Please enter a valid reviewer's name" })}
-            data.reviewedBy = reviewedBy.trim()
-            data.reviewedBy = reviewedBy.replace(reviewedBy[0], reviewedBy[0].toUpperCase())
+            if(!checkName(reviewedBy)){ return res.status(400).send({ status: false, message: "Please enter a valid reviewedBy name" }) }
+            data.reviewedBy = checkName(reviewedBy)
         }
         if(!reviewedBy){data.reviewedBy = "Guest"}
 
@@ -77,15 +76,16 @@ const updateReview = async (req, res) => {
         let {reviewedBy, rating} = data;
             
         if(reviewedBy){
-            let checkName = reviewedBy.match(/[0-9]/)  
-            if(checkName){return res.status(400).send({ status: false, message: "Please enter a valid reviewer's name" })}
-            data.reviewedBy = reviewedBy.trim()
-            data.reviewedBy = reviewedBy.replace(reviewedBy[0], reviewedBy[0].toUpperCase())
+            if(!checkName(reviewedBy)){ return res.status(400).send({ status: false, message: "Please enter a valid reviewedBy name" }) }
+            data.reviewedBy = checkName(reviewedBy)
         }
-        if(rating<1 || rating>5 || typeof(rating)!="number"){
-            {return res.status(400).send({status:false, message:"Please enter rating between 1 to 5"})}
-        }else{
-            if(!rating){return res.status(400).send({status:false, message:"Please enter rating"})}
+
+        if(rating){
+            if(rating<1 || rating>5 || typeof(rating)!="number"){
+                {return res.status(400).send({status:false, message:"Please enter rating between 1 to 5"})}
+            }else{
+                if(!rating){return res.status(400).send({status:false, message:"Please enter rating"})}
+            }
         }
 
         await reviewModel.findByIdAndUpdate(reviewId, { $set: data })
