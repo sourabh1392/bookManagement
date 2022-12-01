@@ -17,7 +17,7 @@ const authentication = (req, res, next) => {
                 next()
             })
         }
-        else return res.status(404).send({ status: false, msg: "Token is missing" })
+        else{ return res.status(404).send({ status: false, msg: "Token is missing" })}
        
     }
     catch (err) {
