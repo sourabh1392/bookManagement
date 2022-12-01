@@ -79,7 +79,7 @@ const updateReview = async (req, res) => {
             data.reviewedBy = checkName(reviewedBy)
         }
 
-        if(rating==0 || rating){
+        if(rating){
             if(rating<1 || rating>5 || typeof(rating)!="number"){
                 {return res.status(400).send({status:false, message:"Please enter rating between 1 to 5"})}
             }else{

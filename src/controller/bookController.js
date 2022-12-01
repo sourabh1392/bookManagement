@@ -150,7 +150,6 @@ const updateBook = async (req, res) => {
 const deleteBook = async function (req, res) {
     try {
         const booksId = req.params.bookId
-
         if(req.bookData.isDeleted == true)return res.status(400).send({ status: false, message: "Book already Deleted" })
        
         await bookModel.findOneAndUpdate({ _id: booksId }, { isDeleted: true, deletedAt: moment().format('YYYY-MM-DD') })
