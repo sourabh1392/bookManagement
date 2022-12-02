@@ -87,7 +87,7 @@ const getBookById = async (req, res) => {
         let bookId = req.params.bookId;
         if(!isValidObjectId(bookId)) return res.status(400).send({status:false, message:"Enter valid BookId"})
 
-        let bookData = await bookModel.findById(bookId).lean()
+        let bookData = await bookModel.findById(bookId).select({__v:0}).lean()
         if(!bookData){ return res.status(404).send({status:false,message:"No such book found"})}
         if(bookData.isDeleted == true){ return res.status(404).send({status:false,message:"Book is Deleted"})}
     
