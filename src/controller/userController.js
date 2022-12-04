@@ -17,18 +17,18 @@ const createUser = async (req, res) => {
         if (!title) { return res.status(400).send({ status: false, message: "Please enter user title" }) }
         
         let enumArr = userModel.schema.obj.title.enum;
-        if (!enumArr.includes(title)) { return res.status(400).send({ status: false, message: "Please enter a valid user title" }) }
+        if (!enumArr.includes(title.trim())) { return res.status(400).send({ status: false, message: "Please enter a valid user title" }) }
 
         if (!name ) { return res.status(400).send({ status: false, message: "Please enter user name" }) }
         if(!checkName(name)){ return res.status(400).send({ status: false, message: "Please enter a valid user name" }) }
         data.name = checkName(name)
-
+        
         if (!phone) { return res.status(400).send({ status: false, message: "Please enter user phone" }) }
         if(!checkPhone(phone)) { return res.status(400).send({ status: false, message: "Please enter a valid phone number" }) }
 
         let userByPhone = await userModel.findOne({ phone :phone })
         if (userByPhone) { return res.status(400).send({ status: false, message: "Phone number alredy exits, please enter another phone number" }) }
-
+        
         if (!email) { return res.status(400).send({ status: false, message: "Please enter user email" }) }
         if (!validateEmail(email)) { return res.status(400).send({ status: false, message: "Please enter a valid user email" }) }
        
