@@ -25,7 +25,7 @@ function checkPassword(str) {
 //----------function for validation name--------------//
 function checkName(str) {
     var re =/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g
-    let bool =  re.test(str);
+    let bool =  re.test(str.trim());
     if(bool==true){
         str = str.trim()
         str= str.replace(str[0], str[0].toUpperCase())

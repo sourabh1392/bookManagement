@@ -1,50 +1,25 @@
-// let n = "978dd-3-16-148410-1"
-
-// let x = n.match(/[0-9]/gi)///.match(/[a-z]/gi)
-// let digits = n.match(/[a-z]/gi)
-// console.log(x)
-// console.log(x.length)
-// console.log(digits)
-
-// //(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)
+//Input: s = "A man, a plan, a canal: Panama"
 
 
-// let reISBN = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/
-// if (!reISBN.test(ISBN)) { return console.log(reISBN)}
+var isPalindrome = function(s) {
+    let x = s.match(/[a-z]/gi)
+    let str1 = ''
+    let  str2 = ""
+    x.forEach(x=>str1+=x)
+    for(let i=x.length-1; i>=0; i--){
+        str2+=x[i]
+    }
+   //let str1 = x.join("").toLowerCase()
+   //let str2 = x.reverse().join("").toLowerCase()
+   if(str1.toLowerCase()==str2.toLowerCase()){return true}
+   else{return false}
+};
+ //console.log(isPalindrome("A man, a plan, a canal: Panama"))
 
 
-//let x = '11-11-2022'
+ let v = {
+    name :"   aman     "
+ }
 
-// function isValidDate(dateString)
-// {
-//     // First check for the pattern
-//     let x = (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
-//     console.log(x)
-       
-// }
-
-function checkISBN(str) {
-    var re = /^\w++(?:[.,_:()\s-](?![.\s-])|\w++)*$/
-    return re.test(str);
-}
-//console.log(checkISBN('Java script'))
-
-//"2022-05-10"
-
-
-
-
-
-
-
-//console.log(checkPhone('123*456789'))
- 
-
-
-//console.log(checkName("aman "))
-
-
-
-
-
-console.log(isValidName("     132, shiv colony       "))
+ v.name = v.name.trim()
+ console.log(v.name)
