@@ -43,7 +43,7 @@ function checkPhone(str) {
 
 
 const validTitleBooks=function(title){
-    const regexTittle=/^[a-zA-Z ]{5,}[a-zA-z0-9]+$/;
+    const regexTittle=/^[A-Za-z0-9\s\-_,\.;?:()]+$/
     return regexTittle.test(title)
 }
   

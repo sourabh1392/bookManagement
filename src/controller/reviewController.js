@@ -43,7 +43,7 @@ const createReview = async (req, res) => {
         let updateBook = await bookModel.findByIdAndUpdate(bookId, { $inc: { reviews: 1 } }, { new: true }).lean()
 
         updateBook.reviewsData = [reviewsData]
-        res.status(200).send({ status: true, message: 'Success', data: updateBook })
+        res.status(201).send({ status: true, message: 'Success', data: updateBook })
 
     } catch (err) {
         res.status(500).send({ status: false, message: err.message })
@@ -70,8 +70,16 @@ const updateReview = async (req, res) => {
         if (!reviewData) { return res.status(404).send({ status: false, message: "No such review found" }) }
     
         let data = req.body
-        let { reviewedBy, rating} = data;
+        let { reviewedBy, rating, review} = data;
 
+        let arr = Object.keys(data)
+        if(arr.length==0){ return res.status(400).send({ status: false, message: "Please enter at least one attribute to update review" }) }
+        
+        for(let i=0; i<arr.length; i++){
+            let msg = ["reviewedBy", "rating", "review"].includes(arr[i])
+            if(msg == false){return res.status(400).send({status:false, message:"It update only  reviewedBy, rating, review"})}
+        }
+            
         if (reviewedBy ||reviewedBy=="") {
             if (!checkName(reviewedBy)) { return res.status(400).send({ status: false, message: "Please enter a valid reviewedBy name" }) }
             data.reviewedBy = checkName(reviewedBy)
@@ -114,11 +122,11 @@ const deleteReview = async (req, res) => {
         if (!reviewData) { return res.status(404).send({ status: false, message: "No such review found" }) }
         if (reviewData.isDeleted == true) { return res.status(400).send({ status: false, message: "review is alredy Deleted" }) }
 
-        await reviewModel.findByIdAndUpdate(reviewId, { $set: { isDeleted: true } })
+        await reviewModel.findByIdAndUpdate(reviewId, { $set: { isDeleted: true, deletedAt: moment().format('YYYY-MM-DD') } })
 
         await bookModel.findByIdAndUpdate(bookId, { $inc: { reviews: -1 } })
 
-        res.status(200).send({ status: true, message: 'Success', data: "Review Deleted" })
+        res.status(200).send({ status: true, message: 'Review Deleted'})
 
     } catch (err) {
         res.status(500).send({ status: false, message: err.message })

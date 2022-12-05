@@ -22,4 +22,13 @@ var isPalindrome = function(s) {
  }
 
  v.name = v.name.trim()
- console.log(v.name)
+ //console.log(v.name)
+
+
+ ///^[A-Za-z0-9\s\-_,\.;:()]+$/
+
+ const validTitleBooks=function(title){
+    const regexTittle=/^[A-Za-z0-9\s\-_,\.;?:()]+$/
+    return regexTittle.test(title)
+}
+console.log(validTitleBooks("Life is?"))
