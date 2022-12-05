@@ -22,10 +22,10 @@ const createBook = async (req, res) => {
         if (!isValidObjectId(userId)) { return res.status(400).send({ status: false, message: "Please enter valid userId" }) }
 
         //autherisation.......
-        if (req.decodedToken.userId != userId) { return res.status(401).send({ status: false, msg: "Not Authorized !" }) }
+        if (req.decodedToken.userId != userId) { return res.status(403).send({ status: false, msg: "Not Authorized !" }) }
 
         //title validation.......
-        if (!title) { return res.status(400).send({ status: false, message: 'Title is required' }) }
+        if (!title) { return res.status(400).send({ status: false, message: 'Title is required' })}
         if (!validTitleBooks(title)) { return res.status(400).send({ status: false, message: 'Please enter a valid Title' }) }
 
         const bookData = await bookModel.findOne({ title: title })
@@ -115,12 +115,18 @@ const updateBook = async (req, res) => {
     try {
         let bookId = req.params.bookId;
 
-        if (req.bookData.isDeleted == true) { return res.send({ status: false, message: "This book is deleted" }) }
+        if (req.bookData.isDeleted == true) { return res.status(400).send({ status: false, message: "This book is deleted" }) }
 
         let data = req.body;
-        if (Object.keys(data).length == 0) { return res.send({ status: false, message: "Please enter data to update" }) }
+        let arr = Object.keys(data)
+        if (arr.length == 0) { return res.status(400).send({ status: false, message: "Please enter data to update" }) }
 
         let { title, excerpt, releasedAt, ISBN } = data;
+
+        for(let i=0; i<arr.length; i++){
+            let msg = ["title", "excerpt", "releasedAt", "ISBN"].includes(arr[i])
+            if(msg == false){return res.status(400).send({status:false, message:"It update only title, excerpt, releasedAt and ISBN"})}
+        }
 
         if (title || title=="") {
             if (!validTitleBooks(title)) { return res.status(400).send({ status: false, message: 'Please enter a valid Title' }) }

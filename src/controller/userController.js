@@ -19,8 +19,8 @@ const createUser = async (req, res) => {
         let enumArr = userModel.schema.obj.title.enum;
         if (!enumArr.includes(title.trim())) { return res.status(400).send({ status: false, message: "Please enter a valid user title" }) }
 
-        if (!name ) { return res.status(400).send({ status: false, message: "Please enter user name" }) }
-        if(!checkName(name)){ return res.status(400).send({ status: false, message: "Please enter a valid user name" }) }
+        if (!name ) { return res.status(400).send({ status: false, message: "Please enter user name" })}
+        if(!checkName(name)){ return res.status(400).send({ status: false, message: "Please enter a valid user name"}) }
         data.name = checkName(name)
         
         if (!phone) { return res.status(400).send({ status: false, message: "Please enter user phone" }) }
@@ -39,6 +39,8 @@ const createUser = async (req, res) => {
         if (!checkPassword(password)) { return res.status(400).send({ status: false, message: "Please enter a valid password" }) }
         
         if (address) {
+            if(typeof(address) != "object"){ return res.status(400).send({ status: false, message: "address should be an object" }) }
+            
             let { street, city, pincode } = address
             if(street){
                 if (!isValidAddress(street)) { return res.status(400).send({status: false, message: "Please Enter valid Street !" }) }
