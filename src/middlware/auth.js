@@ -9,7 +9,6 @@ const authentication = (req, res, next) => {
         if (token) {
             jwt.verify(token, "book management", (error, decode) => {
                 if (error) {
-                   // return res.status(401).send({status:false, message:error.message})
                     if (error.message == 'jwt expired') {
                         return res.status(400).send({ status: false, message: 'Your Token has been expired login Again' })
                     } else return res.status(401).send({ status: false, message: "Authenitication failed" })
@@ -37,7 +36,7 @@ const autherisation = async (req, res, next) => {
         if (!bookData) {return res.status(404).send({ status: false, msg: "Book not found" })}
         req.bookData = bookData
 
-        if (bookData.userId != req.decodedToken.userId) { return res.status(401).send({ status: false, msg: "Not Authorized !" }) }
+        if (bookData.userId != req.decodedToken.userId) { return res.status(403).send({ status: false, msg: "Not Authorized !" }) }
         next()
 
     } catch (err) {
