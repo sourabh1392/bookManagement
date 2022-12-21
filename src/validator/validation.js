@@ -35,7 +35,6 @@ function checkName(str) {
     }
 }
 
-
 function checkPhone(str) {
     var re = /^(\+\d{1,3}[- ]?)?\d{10}$/
     return re.test(str);

@@ -63,7 +63,6 @@ const createUser = async (req, res) => {
 
 
 
-
 //******************************************************* API to user login ************************************************//
 
 const userLogin = async (req, res) => {
